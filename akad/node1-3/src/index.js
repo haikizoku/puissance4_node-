@@ -50,7 +50,7 @@ function promptNextMove(state) {
   const question = `${displayPlayer}, prochain coup ? `
   prompt(question, answer => {
     console.log('commande : ' + answer)
-    fillboard(answer)
+    fillboard(answer,player)
     display(board)
     state.turn++
     promptNextMove(state)
@@ -58,38 +58,100 @@ function promptNextMove(state) {
   })
 }
 
+  /**
+   *Function  qui  verifie  si  la  ligne  est  vide
+   * @param ligne
+   * @returns {Boolean}
+   */
+  function  rowIsempty(ligne){
+      var x = new Boolean("false")
 
+      for(var i=0; i<6; i++)
+      {
+        if(board[ligne][i] != CELL_EMPTY )
+            x =true
+      }
+      return x
+  }
 
-  function ValidPosition(pos){
-    if(pos > 6 || pos < 0 ){
-      console.log("Position impossible veuillez  choisir une position entre 1 et 6")
+  function pleinColone (col){
+    var x = new Boolean("true")
+    for (var i =5 ; i>=0  ;i--)
+    {
+      if (board[col][i] != CELL_EMPTY )
+      {
+        x= false
+      }
     }
-    if (board[5][pos] != 0 ){
-      console.log("position  déjà  prise veuillez  en choisir une autre")
-    }
+    return x
   }
 
 
-  function fillboard(pos) {
-      for(var i=0; i<6; i++) {
+  function  firstEmptyLine(pos){
 
-
-          for (var j = 0; j < 5; j++) {
-              if (board[i][pos] != 0) {
-
-                  board[5][4] = 'P'
-
-              } else if (board[i][pos] != 5 && board[i][pos - 1] != 'undefined') {
-
-                board[5][4] = 'P'
-
-              } else {
-
-                  console.log("position impossible")
-              }
+      for (var i = 5 ; i>=0  ;i--)
+      {
+          if (board[i][pos] === CELL_EMPTY )
+          {
+            console.log(pos, i, board)
+            return  i
           }
       }
+      return  null
   }
+
+
+
+
+
+  /**
+   * Function qui  verifie   si  le   board  est  vide
+   * @returns {Boolean}
+   */
+  function boardIsEmpty(){
+      var y = new Boolean("false")
+      for(var i=0; i<5; i++)
+      {
+          if(rowIsempty(ligne) )
+              y =true
+      }
+      return y
+  }
+
+  function finishGame(){
+
+  }
+
+  function ValidPosition(pos){
+      var valid = new Boolean("true")
+    if(pos < 6 || pos < 0 )
+    {
+      console.log("Position impossible veuillez  choisir une position entre 1 et 6")
+        valid = false
+
+    }
+    if (board[5][pos] != 0 )
+    {
+      console.log("position  déjà  prise veuillez  en choisir une autre")
+        valid =false
+
+    }
+    return valid
+  }
+
+
+  function fillboard(pos ,player) {
+
+
+    var  freeline =firstEmptyLine(pos)
+        if ( freeline  !== null   )
+        {
+            board[freeline][pos] = player
+        }
+
+
+  }
+
 
 
   function getPlayerForState(state) {
