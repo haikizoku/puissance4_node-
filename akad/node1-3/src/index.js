@@ -1,8 +1,10 @@
 const readline = require('readline')
+const game = require('/game')
 
-const CELL_EMPTY = 0
 const PLAYER_A = 1
 const PLAYER_B = 2
+const LINE_LENGHT = 5
+const COlUM_LENGHT =6
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -10,14 +12,6 @@ const rl = readline.createInterface({
   terminal: false,
 })
 
-const board = [
-  [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-  [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-  [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-  [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-  [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-  [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-]
 
 playGame()
 
@@ -74,11 +68,11 @@ function promptNextMove(state) {
       return x
   }
 
-  function pleinColone (col){
+  function fullColumn (column){
     var x = new Boolean("true")
     for (var i =5 ; i>=0  ;i--)
     {
-      if (board[col][i] != CELL_EMPTY )
+      if (board[column][i] != CELL_EMPTY )
       {
         x= false
       }
