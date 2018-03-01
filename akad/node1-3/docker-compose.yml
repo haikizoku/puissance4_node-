@@ -10,8 +10,13 @@ services:
       - .:/app
   index:
     image: node:9.6.1
-    command: node index.js
+    command: node_modules/.bin/nodemon src/server/index.js
     working_dir: /app
-    user: $NODE_USER
     volumes:
       - .:/app
+    ports:
+      - "8000:80"
+  mongo:
+    image:  mongo:3.6
+    volumes:
+     - ./.data:/data/db

@@ -1,13 +1,7 @@
 
 const CELL_EMPTY = 0
-
-module.exports = {
-    createEmptyBoard,
-    CELL_EMPTY
-}
-
-function  createEmptyBoard() {
-    return[
+function createEmptyBoard() {
+    return [
         [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
         [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
         [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
@@ -16,4 +10,10 @@ function  createEmptyBoard() {
         [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
     ]
 
+}
+
+
+module.exports = {
+    createEmptyBoard(),
+    CELL_EMPTY
 }
