@@ -2,7 +2,7 @@ const readline = require('readline')
 //const game = require('./game')
 
 const PLAYER_A = 1
-const PLAYER_B = 2
+const PLAYER_B = 1
 const LINE_LENGHT = 5
 const COlUM_LENGHT =6
 const CELL_EMPTY = 0
@@ -14,17 +14,36 @@ const rl = readline.createInterface({
     output: process.stdout,
     terminal: false,
 })
+//
+// const board =[
+//     [1, 1, 1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1, 1, 1],
+//     [1, 1, 1, 1, 1, 1, 1],
+// ]
+
 
 
 
 const board =[
-        [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-    [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-    [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-    [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-    [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-    [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
-    ]
+    [0, 0, 0, 1, 0, 1, 0],
+    [1, 1, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 0, 0, 0],
+    [1, 0, 0, 1, 0, 0, 0],
+    [1, 0, 0, 0, 1, 0, 0],
+    [1, 0, 0, 0, 0, 1, 0],
+]
+
+// const board =[
+//     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
+//     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
+//     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
+//     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
+//     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
+//     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
+//     ]
 
 playGame()
 
@@ -37,26 +56,16 @@ function playGame() {
     promptNextMove(state)
 
 
-
-    function playNextMove(state) {
-        promptNextMove(state)
-        // isQuit
-        // move = parseMove(cmd)
-        // validation = validateMove(move)
-        // if (validation.isValid) {
-        //   applyMove(state, validation.move)
-        // } else {
-        //   display()
-        //   promptNextMove(state)
-        // }
-    }
-
     function promptNextMove(state) {
         const player = getPlayerForState(state)
         const displayPlayer = getDisplayPlayer(player)
-        const question = `${displayPlayer}, prochain coup ? `
+        const question = `${displayPlayer}, prochain coup ? \n`
+        //win(0,0,player)
         prompt(question, answer => {
             console.log('commande : ' + answer)
+        write(String("\n"))
+
+        boardIsEmpty()
         if (fillboard(answer,player))
         {
         display(board)
@@ -68,34 +77,10 @@ function playGame() {
     }
 
     /**
-     *Function  qui  verifie  si  la  ligne  est  vide
-     * @param ligne
-     * @returns {Boolean}
+     * Function qui retourne state de la position
+     * @param pos
+     * @returns {number}
      */
-    function  rowIsempty(ligne){
-        var x = false
-
-        for(var i=0; i<6; i++)
-        {
-            if(board[ligne][i] != CELL_EMPTY )
-                x =true
-        }
-        return x
-    }
-
-    // function fullColumn (column){
-    //     var x = new Boolean("true")
-    //     for (var i =5 ; i>=0  ;i--)
-    //     {
-    //         if (board[column][i] != CELL_EMPTY )
-    //         {
-    //             x= false
-    //         }
-    //     }
-    //     return x
-    // }
-
-
     function  firstEmptyLine(pos){
         if (pos  < 0 || pos > 6) {
 
@@ -112,10 +97,16 @@ function playGame() {
         return INVALID_CELL
     }
 
-
+    /**
+     * Function qui  remplit  le board
+     * @param pos
+     * @param player
+     * @returns {boolean}
+     */
     function fillboard(pos ,player) {
         var isValidPosition = false
         var  freeline =firstEmptyLine(pos)
+       // win(1,1,player)
         if ( freeline  === INVALID_CELL  )
         {
            console.log("Position  impossible Veuillez  en choisir une autre")
@@ -123,53 +114,62 @@ function playGame() {
             console.log("veuillez  choisir  une position  entre 1 et  6")
         }else {
             board[freeline][pos] = player
-            isValidPosition= true
+            if (win (freeline,pos,player)){
+                console.log("finish")
+            }else{
+
+            isValidPosition= true}
         }
 
         return isValidPosition
     }
+   // win(0,3,player)
+    function win   (row, column, player) {
+        // Horizontal
+        var count = 0
+        for (var j = 0; j < 6; j++) {
+            count = (board[row][j] == player) ? count + 1 : 0;
 
-
+            if (count >= 4) {
+                console.log(  "player "+ player +" win ")
+                return true;
+            }
+        }
+        // Vertical
+        var count = 0
+        for (var j = 0; j < 5; j++) {
+            count = (board[j][column] == player) ? count+1 : 0;
+            if (count >= 4) {
+                console.log(  "player "+ player +" win ")
+                return true;
+            }
+        }
+        // Diagonal
+        count = 0;
+        var shift = row - column;
+        for (var i = Math.max(shift, 0); i < Math.min(row, column + shift); i++) {
+            count = (board[i][i - shift] == player) ? count+1 : 0;
+            if (count >= 4) {
+                console.log(  "player "+ player +" win ")
+                return true;
+            }
+        }
+    }
 
 
     /**
      * Function qui  verifie   si  le   board  est  vide
      * @returns {Boolean}
      */
-    // function boardIsEmpty(){
-    //     var y = new Boolean("false")
-    //     for(var i=0; i<5; i++)
-    //     {
-    //         if(rowIsempty(ligne) )
-    //             y =true
-    //     }
-    //     return y
-    // }
-    //
-    // function finishGame(){
-    //
-    // }
-
-    function ValidPosition(pos){
-        var valid = new Boolean("true")
-        if(pos < 6 || pos < 0 )
+    function boardIsEmpty(){
+        var boardEmpty = false
+        for(var i=0; i<6 ;i++)
         {
-            console.log("Position impossible veuillez  choisir une position entre 1 et 6")
-            valid = false
-
+        if (firstEmptyLine(i) != INVALID_CELL && firstEmptyLine(i) != OUT_OF_BOARD)
+            boardEmpty = true
         }
-        if (board[5][pos] != 0 )
-        {
-            console.log("position  déjà  prise veuillez  en choisir une autre")
-            valid =false
-
-        }
-        return valid
+        return boardEmpty
     }
-
-
-
-
 
 
     function getPlayerForState(state) {
@@ -209,17 +209,3 @@ function write(msg) {
     process.stdout.write(msg)
 }
 
-// run('> ')
-//
-// function run(question) {
-//   ask()
-//
-//   function ask() {
-//     rl.question(question, onAnswer)
-//   }
-//
-//   function onAnswer(answer) {
-//     console.log(answer)
-//     ask()
-//   }
-// }
