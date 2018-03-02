@@ -1,8 +1,8 @@
 const readline = require('readline')
 const chalk = require('chalk')
 
-const PLAYER_A = 1
-const PLAYER_B = 2
+const PLAYER_A = "X"
+const PLAYER_B = "R"
 const VALUE_QUIT = "exit"
 const CELL_EMPTY = 0
 const INVALID_CELL = 1000
