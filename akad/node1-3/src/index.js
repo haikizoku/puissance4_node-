@@ -1,7 +1,8 @@
 const readline = require('readline')
+const chalk = require('chalk')
 
 const PLAYER_A = 1
-const PLAYER_B = 1
+const PLAYER_B = 2
 const VALUE_QUIT = "exit"
 const CELL_EMPTY = 0
 const INVALID_CELL = 1000
@@ -87,11 +88,11 @@ function playGame() {
     function fillboard(pos, player) {
         var isValidPosition = false
         var freeline = firstEmptyLine(pos)
-        // win(1,1,player)
+
         if (freeline === INVALID_CELL) {
-            console.log("Position  impossible Veuillez  en choisir une autre")
+            console.log(chalk.red ('Position  impossible Veuillez  en choisir une autre'))
         } else if (freeline === OUT_OF_BOARD) {
-            console.log("veuillez  choisir  une position  entre 1 et  6")
+            console.log(chalk.red ('veuillez  choisir  une position  entre 1 et  6'))
         } else {
             board[freeline][pos] = player
             if (win(freeline, pos, player)) {
@@ -125,7 +126,7 @@ function playGame() {
             count = (board[row][j] == player) ? count + 1 : 0;
 
             if (count >= 4) {
-                console.log("player " + player + " win ")
+                console.log(chalk.green('player ' + player + ' win '))
                 return true;
             }
         }
@@ -197,7 +198,7 @@ function prompt(question, callback) {
 function display(board) {
     board.forEach(row => {
         row.forEach(cell => {
-        write('|' + cell)
+        write(chalk.blue('|') + cell)
     //write(String(cell))
 })
     write(String("\n"))
